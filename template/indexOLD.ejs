@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --bg-image-certificate: url(`${<%= bg %>}`);
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .flex-col {
+    flex-direction: column;
+  }
+
+  .items-center {
+    align-items: center;
+  }
+
+  .justify-center {
+    justify-content: center;
+  }
+
+  .gap-3>*+* {
+    margin-top: 0.75rem;
+  }
+
+  .py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .bg-contain {
+    background-size: contain;
+  }
+
+  .bg-center {
+    background-position: center;
+  }
+
+  .bg-no-repeat {
+    background-repeat: no-repeat;
+  }
+
+
+  .bg-login {
+    background-image: --bg-image-certificate
+  }
+
+  .w-max-container {
+    width: 746px;
+  }
+
+  .h-max-container {
+    height: 510px;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .p-11 {
+    padding: 2.75rem;
+  }
+
+  .w-max-logo {
+    width: 144px;
+  }
+
+  .h-max-logo {
+    height: 37px;
+  }
+
+  .absolute {
+    position: absolute;
+  }
+
+  .font-bold {
+    font-weight: bold;
+  }
+
+  .text-xl {
+    font-size: 1.5rem;
+  }
+
+  .w-full {
+    width: 100%;
+  }
+
+  .z-negative {
+    z-index: -100;
+  }
+</style>
+</head>
+
+<body class="w-max-container h-max-container">
+  <div class="flex flex-col items-center justify-center gap-3">
+    <div class="bg-contain bg-center bg-no-repeat bg-login w-max-container h-max-container flex items-center justify-center
+      relative
+      flex-col p-11">
+      <img class="h-full w-full absolute top-0 left-0 z-negative" src="<%= bg %>">
+      <% if (is_show_logo) { %>
+        <div class="<%= [" w-[144px] h-[37px] bg-no-repeat absolute", stylePositionShow].join(" ") %>">
+          <img class="w-max-logo h-max-logo" src="<%= logoPreview %>" alt="">
+        </div>
+        <% } %>
+          <div class="flex flex-col justify-center items-center gap-3">
+            <span class="font-bold text-xl">
+              certificate
+            </span>
+            <span>
+              we.certify
+            </span>
+            <span class="font-bold">
+              <%= name %>
+            </span>
+            <span>
+              successfully.completed.course
+            </span>
+            <span class="font-bold">
+              certificatedPreview.title_course
+            </span>
+          </div>
+          <div class="flex flex-col w-full">
+            <span class="font-bold">
+              <%= date %>
+            </span>
+            <span>
+              date conclusion
+            </span>
+          </div>
+    </div>
+  </div>
+</body>
+
+</html>
