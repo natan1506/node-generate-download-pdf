@@ -1,17 +1,14 @@
 import express from 'express'
 import ejs from 'ejs'
-import path from 'path'
 import puppeteer from 'puppeteer'
 import { fileURLToPath } from 'url'
 import crypto from 'crypto'
 import fs from 'fs'
-
 const app = express();
-app.use(express.json());
-app.use(express.static('public'));
 
-const filename = fileURLToPath(import.meta.url)
-const __dirname =  path.dirname(filename)
+app.use(express.json());
+app.use(express.static('public'))
+
 
 app.get('/pdf-download', async(req, res) => {
   const browser = await puppeteer.launch({headless: true})
@@ -31,12 +28,6 @@ app.get('/pdf-download', async(req, res) => {
   })
 
   await browser.close()
-  // res.set({
-  //   'Cache-Control': 'no-cache',
-  //   'Content-Type': 'PDF',
-  //   'Content-Length': pdf.file_length,
-  //   'Content-Disposition': 'attachment; filename=pdf'
-  // });
   res.contentType("application/pdf")
   res.download(`./${name}.pdf`, 'certificate.pdf', (err) =>{
     if (err) {
@@ -51,12 +42,34 @@ app.get('/pdf-download', async(req, res) => {
 
 app.get('/', (req, res) => {
   const filename = fileURLToPath(import.meta.url)
-  const __dirname =  path.dirname(filename)
+
+  let position = () => {
+    let p = "bottom-center"
+    switch (p) {
+      case 'top-left':
+        return "top-10 left-10"
+      case 'top-center':
+        console.log('entrou')
+        return "top-10"
+      case "top-right":
+        return "top-10 right-10"
+      case "bottom-left":
+        return "bottom-10 left-10"
+      case "bottom-center":
+        return "bottom-10"
+      case "bottom-right":
+        return "bottom-10 right-10"
+      default:
+        return "top-10 left-10"
+    }
+  }
   
   ejs.renderFile('./template/index.ejs', { 
     name: 'YOUR NAME', 
-    date: '23/08/2023', 
-    is_show_logo:false,
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident itaque, at consectetur esse tempora, accusamus unde libero assumenda sint beatae soluta maiores laboriosam. Voluptas debitis sapiente excepturi temporibus porro laudantium.', 
+    date: new Date().toLocaleDateString(), 
+    is_show_logo: false,
+    position: position(),
     bg: "background_certificate.jpg"
   }, (err, html) => {
     if(err) {
@@ -64,33 +77,12 @@ app.get('/', (req, res) => {
       return res.status(500).json({ message: 'Error in Server' })
     }
 
-    // const options = {
-    //   format: 'A4',
+    const options = {
+      format: 'A4',
 
-    // }
-    // pdf.create(html, options).toStream(function(err, stream){
-    //   if (err) return res.send(err);
-    //   // res.type('pdf');
-    //   res.download(stream.path, 'certificate.pdf')
-
-      // res.contentType("application/pdf")
-      // res.set({
-      //   'Cache-Control': 'no-cache',
-      //   'Content-Type': 'PDF',
-      //   'Content-Length': stream.file_length,
-      //   'Content-Disposition': 'attachment; filename=pdf'
-      // });
-
-      // return res.send(`./ola.pdf`)
-      // return res.send(html)
-
-    // });
-
+    }
     return res.send(html)
-    
   })
-
-  // return res.json({message: 'hello code'})
 })
 
 app.listen(3333)
